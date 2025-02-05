@@ -3,12 +3,15 @@ package com.kodilla.testing.forum.statistics;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
@@ -26,10 +29,50 @@ class UsersStatisticsTestSuite {
 
         private UsersStatistics usersStatistics;
 
+        private List<String> generateUserNames(int numberOfUsers) {
+            List<String> userNames = new ArrayList<>();
+            for (int i = 0; i < numberOfUsers; i++) {
+                userNames.add("user" + i);
+            }
+            return userNames;
+        }
+
+        private static Stream<Arguments> provideDataForTests() {
+            return Stream.of(
+                    Arguments.of(1, 1, 1, 1.0, 1.0, 1.0),
+                    Arguments.of(10, 50, 25, 5.0, 2.5, 0.5),
+                    Arguments.of(5, 0, 10, 0.0, 2.0, 0.0),
+                    Arguments.of(0, 0, 0, 0.0, 0.0, 0.0),
+                    Arguments.of(0, 100, 50, 0.0, 0.0, 0.5)
+            );
+        }
+
         @BeforeEach
         void setUp() {
             usersStatistics = new UsersStatistics();
         }
+
+        @ParameterizedTest
+        @MethodSource("provideDataForTests")
+        void testForAllCases(int userNumber, int postsNumber, int commentsNumber, double avgPostsNumberPerUser, double avgCommentsNumberPerUser, double avgCommentsNumberPerPost) {
+            //Given
+            List<String> usersNamesList = generateUserNames(userNumber);
+            when(statisticsMock.usersNames()).thenReturn(usersNamesList);
+            when(statisticsMock.postsCount()).thenReturn(postsNumber);
+            when(statisticsMock.commentsCount()).thenReturn(commentsNumber);
+
+            //When
+            usersStatistics.calculateAdvStatistics(statisticsMock);
+
+            //Then
+            assertEquals(commentsNumber, usersStatistics.getCommentsNumber());
+            assertEquals(postsNumber, usersStatistics.getPostsNumber());
+            assertEquals(userNumber, usersStatistics.getUsersNumber());
+            assertEquals(avgPostsNumberPerUser, usersStatistics.getAvgPostsNumberPerUser());
+            assertEquals(avgCommentsNumberPerUser, usersStatistics.getAvgCommentsNumberPerUser());
+            assertEquals(avgCommentsNumberPerPost, usersStatistics.getAvgCommentsNumberPerPost());
+        }
+
 
         @ParameterizedTest
         @ValueSource(ints = {0, 1000})
