@@ -31,6 +31,31 @@ public class StreamMain {
         System.out.println("Elements after filter: " + resultMapForumUsers.size());
         resultMapForumUsers.values()
                 .forEach(System.out::println);
+
+        String text = "Java";
+        String text2 = "Java2";
+        String reversText = reversText(text);
+        System.out.println(reversText);
+        String reversText2 = reversText2(text2);
+        System.out.println(reversText2);
+
+    }
+
+
+    private static String reversText(String text) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(text);
+        builder.reverse();
+        return builder.toString();
+    }
+
+    public static String reversText2(String text) {
+        String reversText = "";
+        for (int i = 0; i < text.length(); i++) {
+            char ch = text.charAt(i);
+            reversText = ch + reversText;
+        }
+        return reversText;
     }
 
 
