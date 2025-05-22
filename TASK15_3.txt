@@ -1,0 +1,40 @@
+CREATE TABLE ISSUESLISTS
+(
+    ID   SERIAL PRIMARY KEY,
+    NAME VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE ISSUES
+(
+    ID                 SERIAL PRIMARY KEY,
+    ISSUESLIST_ID      BIGINT UNSIGNED NOT NULL,
+    SUMMARY            VARCHAR(100),
+    DESCRIPTION        VARCHAR(2048),
+    USER_ID_ASSIGNEDTO BIGINT UNSIGNED,
+    FOREIGN KEY (ISSUESLIST_ID) REFERENCES ISSUESLISTS (ID),
+    FOREIGN KEY (USER_ID_ASSIGNEDTO) REFERENCES USERS (ID)
+);
+
+INSERT INTO ISSUESLISTS (NAME)
+VALUES ("ToDo", "In progress", "Done")
+
+INSERT INTO ISSUES (ISSUESLIST_ID, SUMMARY, DESCRIPTION, USER_ID_ASSIGNEDTO)
+VALUES (1, 'Zadanie 1', 'Opis zadania 1', 1),
+       (1, 'Zadanie 2', 'Opis zadania 2', 2),
+       (1, 'Zadanie 3', 'Opis zadania 3', NULL),
+       (1, 'Zadanie 4', 'Opis zadania 4', 1),
+       (1, 'Zadanie 5', 'Opis zadania 5', 3);
+
+INSERT INTO ISSUES (ISSUESLIST_ID, SUMMARY, DESCRIPTION, USER_ID_ASSIGNEDTO)
+VALUES (2, 'Zadanie A', 'Opis zadania A', 1),
+       (2, 'Zadanie B', 'Opis zadania B', 2),
+       (2, 'Zadanie C', 'Opis zadania C', 3),
+       (2, 'Zadanie D', 'Opis zadania D', NULL),
+       (2, 'Zadanie E', 'Opis zadania E', 1);
+
+INSERT INTO ISSUES (ISSUESLIST_ID, SUMMARY, DESCRIPTION, USER_ID_ASSIGNEDTO)
+VALUES (3, 'Zadanie X', 'Opis zadania X', 2),
+       (3, 'Zadanie Y', 'Opis zadania Y', 1),
+       (3, 'Zadanie Z', 'Opis zadania Z', NULL),
+       (3, 'Zadanie W', 'Opis zadania W', 3),
+       (3, 'Zadanie V', 'Opis zadania V', 2);
