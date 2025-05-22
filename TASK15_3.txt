@@ -16,7 +16,10 @@ CREATE TABLE ISSUES
 );
 
 INSERT INTO ISSUESLISTS (NAME)
-VALUES ("ToDo", "In progress", "Done")
+VALUES
+    ("ToDo"),
+    ("In progress"),
+    ("Done");
 
 INSERT INTO ISSUES (ISSUESLIST_ID, SUMMARY, DESCRIPTION, USER_ID_ASSIGNEDTO)
 VALUES (1, 'Zadanie 1', 'Opis zadania 1', 1),
